@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.movie_item.view.*
 import song.adriano.com.br.upcomingmovies.R
+import song.adriano.com.br.upcomingmovies.utils.Constants
 import song.adriano.com.br.upcomingmovies.viewmodel.MovieViewModel
 
-class MovieAdapter(val myMovies: MutableList<MovieViewModel>): RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class MovieAdapter(private val myMovies: MutableList<MovieViewModel>): RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
@@ -25,7 +26,9 @@ class MovieAdapter(val myMovies: MutableList<MovieViewModel>): RecyclerView.Adap
 
         holder.txtMovieTitle.text = myMovies[position].movieTitle
         holder.txtMovieReleaseDate.text = myMovies[position].movieReleaseDate
-        Glide.with(holder.itemView).load(myMovies[position].moviePosterPath).into(holder.imageMoviePoster)
+        Glide.with(holder.itemView)
+                .load( "${Constants.BASE_IMG_URL}${myMovies[position].moviePosterPath}")
+                .into(holder.imageMoviePoster)
     }
 
 

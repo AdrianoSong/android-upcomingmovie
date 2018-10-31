@@ -2,29 +2,38 @@ package song.adriano.com.br.upcomingmovies
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
-import song.adriano.com.br.upcomingmovies.service.MyHttpRequester
+import kotlinx.android.synthetic.main.content_main.*
+import song.adriano.com.br.upcomingmovies.adapter.MovieAdapter
+import song.adriano.com.br.upcomingmovies.presenter.MainPresenter
+import song.adriano.com.br.upcomingmovies.presenter.MainPresenterListener
+import song.adriano.com.br.upcomingmovies.viewmodel.MovieViewModel
 
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MainPresenterListener {
+
+    private var page = 1
+    private val mainPresenter = MainPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener {
-            startActivity(Intent(MainActivity@this, MovieDetailActivity::class.java))
-        }
+        mainPresenter.fetchMovies(page)
+    }
 
-        MyHttpRequester.getMovies(1)
+    private fun setupRecyclerview(moviesVMList: MutableList<MovieViewModel>) {
+
+        recyclerViewMovies.layoutManager = LinearLayoutManager(this)
+        recyclerViewMovies.adapter = MovieAdapter(moviesVMList)
     }
 
     private fun setupSearchView(menu: Menu) {
@@ -32,7 +41,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         val searchView = searchItem.actionView as SearchView
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity@this.componentName))
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.componentName))
 
         searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(this)
@@ -62,5 +71,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         Log.e("main", "text changed $newText")
         return true
+    }
+
+    override fun onFetchMoviesDone(movieViewModelList: MutableList<MovieViewModel>) {
+
+        runOnUiThread {
+            setupRecyclerview(movieViewModelList)
+        }
     }
 }
