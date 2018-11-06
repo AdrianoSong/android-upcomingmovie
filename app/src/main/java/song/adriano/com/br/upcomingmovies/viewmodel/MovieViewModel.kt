@@ -1,8 +1,9 @@
 package song.adriano.com.br.upcomingmovies.viewmodel
 
 import song.adriano.com.br.upcomingmovies.model.Movie
+import java.io.Serializable
 
-class MovieViewModel (movie: Movie) {
+class MovieViewModel (movie: Movie) : Serializable {
 
     var movieId: Int? = 0
     var movieTitle: String? = ""

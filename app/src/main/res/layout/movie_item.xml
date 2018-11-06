@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/movieCardView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginStart="16dp"
@@ -42,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="107dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="100dp"
             android:text="@string/release_date"
             android:textSize="14sp" />
 

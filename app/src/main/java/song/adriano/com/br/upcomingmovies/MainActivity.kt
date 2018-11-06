@@ -2,6 +2,7 @@ package song.adriano.com.br.upcomingmovies
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -13,11 +14,15 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import song.adriano.com.br.upcomingmovies.adapter.MovieAdapter
+import song.adriano.com.br.upcomingmovies.adapter.MovieAdapterItemListener
 import song.adriano.com.br.upcomingmovies.presenter.MainPresenter
 import song.adriano.com.br.upcomingmovies.presenter.MainPresenterListener
 import song.adriano.com.br.upcomingmovies.viewmodel.MovieViewModel
 
-class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MainPresenterListener {
+class MainActivity : AppCompatActivity(),
+        SearchView.OnQueryTextListener,
+        MainPresenterListener,
+        MovieAdapterItemListener {
 
     private var page = 1
     private val mainPresenter = MainPresenter(this)
@@ -33,10 +38,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MainPr
     private fun setupRecyclerview(moviesVMList: MutableList<MovieViewModel>) {
 
         recyclerViewMovies.layoutManager = LinearLayoutManager(this)
-        recyclerViewMovies.adapter = MovieAdapter(moviesVMList)
+        recyclerViewMovies.adapter = MovieAdapter(moviesVMList, this)
     }
 
     private fun setupSearchView(menu: Menu) {
+
         val searchItem = menu.findItem(R.id.action_search)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -78,5 +84,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener, MainPr
         runOnUiThread {
             setupRecyclerview(movieViewModelList)
         }
+    }
+
+    override fun onMovieItemClicked(myMovie: MovieViewModel) {
+
+        val myIntent = Intent(this, MovieDetailActivity::class.java)
+
+        myIntent.putExtra("myMovie", myMovie)
+
+        startActivity(myIntent)
     }
 }
