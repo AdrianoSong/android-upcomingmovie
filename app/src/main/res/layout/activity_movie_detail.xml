@@ -33,6 +33,16 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_movie_detail" />
+    <include
+        android:id="@+id/detailContent"
+        android:visibility="invisible"
+        layout="@layout/content_movie_detail" />
+
+    <ProgressBar
+        android:id="@+id/progressDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/detailContent"
+        app:layout_anchorGravity="center" />
 
 </android.support.design.widget.CoordinatorLayout>

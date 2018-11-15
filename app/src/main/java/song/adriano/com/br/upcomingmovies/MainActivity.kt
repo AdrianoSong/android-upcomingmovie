@@ -10,6 +10,7 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -53,6 +54,12 @@ class MainActivity : AppCompatActivity(),
         searchView.setOnQueryTextListener(this)
     }
 
+    private fun hideLoadingShowContent() {
+
+        progressMain.visibility = View.INVISIBLE
+        mainContent.visibility = View.VISIBLE
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -83,6 +90,7 @@ class MainActivity : AppCompatActivity(),
 
         runOnUiThread {
             setupRecyclerview(movieViewModelList)
+            hideLoadingShowContent()
         }
     }
 

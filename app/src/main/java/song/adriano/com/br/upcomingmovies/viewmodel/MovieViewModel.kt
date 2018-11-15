@@ -1,6 +1,7 @@
 package song.adriano.com.br.upcomingmovies.viewmodel
 
 import song.adriano.com.br.upcomingmovies.model.Movie
+import song.adriano.com.br.upcomingmovies.utils.Date
 import java.io.Serializable
 
 class MovieViewModel (movie: Movie) : Serializable {
@@ -14,6 +15,6 @@ class MovieViewModel (movie: Movie) : Serializable {
         movieId = movie.id
         movieTitle = movie.title
         moviePosterPath = movie.posterPath
-        movieReleaseDate = movie.releaseDate
+        movieReleaseDate =  Date.convertDateToSimpleDateFormat(movie.releaseDate)
     }
 }

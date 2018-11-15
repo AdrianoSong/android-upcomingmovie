@@ -63,7 +63,6 @@ class MyHttpRequester {
 
                 requestMethod = "GET"
 
-
                 println("\nSending 'GET' request to URL : $url")
 
                 Thread {
@@ -81,9 +80,7 @@ class MyHttpRequester {
                         myRequester.onGetMovieDetailDone(parseMovieDetailData(response.toString()))
                     }
                 }.start()
-
             }
-
         }
 
         fun parseMoviesData(response: String): MutableList<MovieViewModel> {
