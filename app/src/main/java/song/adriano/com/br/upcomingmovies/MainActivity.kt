@@ -13,11 +13,11 @@ import android.view.MenuItem
 import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import song.adriano.com.br.upcomingmovies.adapter.MovieAdapter
 import song.adriano.com.br.upcomingmovies.adapter.MovieAdapterItemListener
 import song.adriano.com.br.upcomingmovies.presenter.MainPresenter
 import song.adriano.com.br.upcomingmovies.presenter.MainPresenterListener
+import song.adriano.com.br.upcomingmovies.utils.InfiniteScrollListener
 import song.adriano.com.br.upcomingmovies.viewmodel.MovieViewModel
 
 class MainActivity : AppCompatActivity(),
@@ -38,8 +38,17 @@ class MainActivity : AppCompatActivity(),
 
     private fun setupRecyclerview(moviesVMList: MutableList<MovieViewModel>) {
 
-        recyclerViewMovies.layoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+
+        recyclerViewMovies.layoutManager = linearLayoutManager
         recyclerViewMovies.adapter = MovieAdapter(moviesVMList, this)
+        recyclerViewMovies.addOnScrollListener(InfiniteScrollListener({
+            MainActivity()::requestMoreMovies
+        },linearLayoutManager))
+    }
+
+    private fun requestMoreMovies() {
+        Log.e("main", "chama mais")
     }
 
     private fun setupSearchView(menu: Menu) {
@@ -57,7 +66,7 @@ class MainActivity : AppCompatActivity(),
     private fun hideLoadingShowContent() {
 
         progressMain.visibility = View.INVISIBLE
-        mainContent.visibility = View.VISIBLE
+        recyclerViewMovies.visibility = View.VISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
